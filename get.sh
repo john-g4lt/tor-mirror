@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -eEo pipefail
 
@@ -117,7 +117,7 @@ main() ({
         exit 1
     fi
     echo "  - Url: fotolub.com/$key"
-    export FOTOLUB_KEY="$key"
+    export F_KEY="$key"
     for name in "${names[@]}"; do
         echo "  - Uploading $name ..."
         resp=$(curl -b cookies.txt -X POST -H "X-Requested-With: XMLHttpRequest" -F "file=@$name" "https://fotolub.com/upload.php" -sL)
