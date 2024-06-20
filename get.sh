@@ -52,8 +52,8 @@ main() ({
     set -eEo pipefail
 
     echo "- Getting the latest Tor version..."
-    local ver=$( cat ver.txt )
-    #local ver=$( curl "https://dist.torproject.org/torbrowser/" -m 10 2>&1 | grep -E '<a href="[0-9]+\.[0-9]+\.[0-9]+/"' 2>&1 | sed -r 's/^.*<a href=\"([0-9]+\.[0-9]+\.[0-9]+)\/\".*/\1/' )
+    #local ver=$( cat ver.txt )
+    local ver=$( curl "https://dist.torproject.org/torbrowser/" -m 10 2>&1 | grep -E '<a href="[0-9]+\.[0-9]+\.[0-9]+/"' 2>&1 | sed -r 's/^.*<a href=\"([0-9]+\.[0-9]+\.[0-9]+)\/\".*/\1/' )
     if [[ "$ver" == "" ]]; then
         echo "Possibly blocked by ISP"
         exit 1
@@ -63,7 +63,7 @@ main() ({
     export TOR_VER="$ver"
     
     echo "- Downloading Tor latest ($ver) release..."
-    #if [[ -d downloads ]]; then rm -rf downloads || exit 1; fi
+    if [[ -d downloads ]]; then rm -rf downloads || exit 1; fi
     if [[ ! -d downloads ]]; then mkdir downloads || exit 1; fi
     cd downloads || exit 1
     local names=()
