@@ -127,6 +127,7 @@ main() {
             exit 1
         fi
     done
+    rm cookies.txt || exit 1
     cd .. || exit 1
     echo "SUCCESS"
     echo "  - fotulub: fotolub.com/$key"
