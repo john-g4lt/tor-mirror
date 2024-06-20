@@ -79,7 +79,7 @@ main() {
     local or_arches=()
     or_arches+=("universal")
     or_arches+=("arm64-v8a")
-    for arch in "${#or_arches[@]}"; do
+    for arch in "${or_arches[@]}"; do
         local name="Orbot-$orbot_ver-fullperm-$arch-release.apk"
         if [[ -f "$name" ]]; then
             echo "  - $name already exists ..."
