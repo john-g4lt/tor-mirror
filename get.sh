@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -eEo pipefail
 
@@ -48,7 +48,7 @@ rand_str_low_num() {
 
 required_bins curl grep sed python cat rm mkdir basename
 
-main() ({
+main() {
     set -eEo pipefail
 
     echo "- Getting the latest Tor version..."
@@ -130,6 +130,6 @@ main() ({
     cd .. || exit 1
     echo "SUCCESS"
     echo "  - fotulub: fotolub.com/$key"
-})
+}
 
 main "$@" || exit 1
