@@ -10,24 +10,10 @@ required_bin() (
         exit 1
     fi
 )
-required_sudo_bin() (
-    set -eEo pipefail
-    local loc="$(sudo which "$1")"
-    if [ "$loc" = "" ]; then
-        echo "ERROR: Binary "'"'$1'"'" is required under sudo (!), but not found in sudo (!) PATH"
-        exit 1
-    fi
-)
 required_bins() (
     set -eEo pipefail
     for name in "$@"; do 
         required_bin $name
-    done
-)
-required_sudo_bins() (
-    set -eEo pipefail
-    for name in "$@"; do 
-        required_sudo_bin $name
     done
 )
 
@@ -90,16 +76,25 @@ main() {
     export ORBOT_VER="$orbot_ver"
     
     echo "- Downloading Orbot latest ($orbot_ver) release..."
-    local name="Orbot-$orbot_ver-fullperm-universal-release.apk"
-    local url="https://github.com/guardianproject/orbot/releases/download/$orbot_ver/$name"
-    echo "  - Downloading $name ..."
-    download_status="$( download "$url" "$name" )"
-    if [[ "$download_status" != 200 ]]; then
-        echo "ERROR: Wrong respone status code ($download_status), check your internet connection & file ($url) availability"
-        exit 1
-    fi
-    names+=($name)
-    local names_len=${#names[@]}
+    local or_arches=()
+    or_arches+=("universal")
+    or_arches+=("arm64-v8a")
+    for arch in "${#or_arches[@]}"; do
+        local name="Orbot-$orbot_ver-fullperm-$arch-release.apk"
+        if [[ -f "$name" ]]; then
+            echo "  - $name already exists ..."
+            continue
+        fi
+        echo "  - Downloading $name ..."
+        local url="https://github.com/guardianproject/orbot/releases/download/$orbot_ver/$name"
+        download_status="$( download "$url" "$name" )"
+        if [[ "$download_status" != 200 ]]; then
+            echo "ERROR: Wrong respone status code ($download_status), check your internet connection & file ($url) availability"
+            exit 1
+        fi
+        names+=($name)
+        names_len=${#names[@]}
+    done
 
     echo "- Uploading to fotolub ..."
     echo "  - Gettings fotolub cookies ..."
