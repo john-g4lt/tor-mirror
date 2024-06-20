@@ -39,14 +39,7 @@ download() (
     echo "$download_status"
 )
 
-rand_str_low_num() {
-    local len="$1"
-    local chars=()
-    for i in {a..z} {0..9}; do chars[$RANDOM]=$i; done
-    echo $(printf %s ${chars[@]::$len})
-}
-
-required_bins curl grep sed python cat rm mkdir basename
+required_bins curl grep sed cat rm mkdir basename
 
 main() {
     set -eEo pipefail
