@@ -5,7 +5,7 @@
 - Weakly releases
 - [Fully automated via GitHub actions](https://github.com/john-g4lt/tor-mirror/actions/workflows/ci.yml)
 - All platforms
-- [Orbot](https://github.com/guardianproject/orbot) - Tor networks as full-devices VPN included
+- [Orbot](https://github.com/guardianproject/orbot) included - Tor networks as full-device VPN
 - Second mirror on filehosting
 
 ## Download
