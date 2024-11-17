@@ -25,14 +25,14 @@ download() (
     echo "$download_status"
 )
 
-required_bins curl grep sed cat rm mkdir basename
+required_bins curl grep tail sed cat rm mkdir basename
 
 main() {
     set -eEo pipefail
 
     echo "- Getting the latest Tor version..."
     #local ver=$( cat ver.txt )
-    local ver=$( curl "https://dist.torproject.org/torbrowser/" -m 10 2>&1 | grep -E '<a href="[0-9]+\.[0-9]+\.[0-9]+/"' 2>&1 | sed -r 's/^.*<a href=\"([0-9]+\.[0-9]+\.[0-9]+)\/\".*/\1/' )
+    local ver=$( curl "https://dist.torproject.org/torbrowser/" -m 10 2>&1 | grep -E '<a href="[0-9]+\.[0-9]+\.[0-9]+/"' 2>&1 | tail -1 2>&1 | sed -r 's/^.*<a href=\"([0-9]+\.[0-9]+\.[0-9]+)\/\".*/\1/' )
     if [[ "$ver" == "" ]]; then
         echo "Possibly blocked by ISP"
         exit 1
