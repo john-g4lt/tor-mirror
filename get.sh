@@ -96,29 +96,30 @@ main() {
         names_len=${#names[@]}
     done
 
-    echo "- Uploading to fotolub ..."
-    echo "  - Gettings fotolub cookies ..."
-    _=$( curl "https://fotolub.com/en" -c cookies.txt -s )
-    key=$( cat cookies.txt 2>&1 | grep -F "fileset_id" | sed -r "s/.*fileset_id[ \t]+([a-zA-Z0-9]+).*/\1/g" )
-    if [ "${#key}" != 5 ]; then
-        echo "fotolub failed to create, key: \"$key\""
-        exit 1
-    fi
-    echo "  - Url: fotolub.com/$key"
-    export F_KEY="$key"
-    for name in "${names[@]}"; do
-        echo "  - Uploading $name ..."
-        resp=$(curl -b cookies.txt -X POST -H "X-Requested-With: XMLHttpRequest" -F "file=@$name" "https://fotolub.com/upload.php" -sL)
-        ok=$( echo "$resp" | grep -E '"success"\s*:\s*true' )
-        if [[ "$ok" == "" ]]; then
-            echo "ERROR: Wrong upload respone status ($resp)"
-            exit 1
-        fi
-    done
-    rm cookies.txt || exit 1
     cd .. || exit 1
     echo "SUCCESS"
-    echo "  - fotulub: fotolub.com/$key"
+
+    # echo "- Uploading to fotolub ..."
+    # echo "  - Gettings fotolub cookies ..."
+    # _=$( curl "https://fotolub.com/en" -c cookies.txt -s )
+    # key=$( cat cookies.txt 2>&1 | grep -F "fileset_id" | sed -r "s/.*fileset_id[ \t]+([a-zA-Z0-9]+).*/\1/g" )
+    # if [ "${#key}" != 5 ]; then
+    #     echo "fotolub failed to create, key: \"$key\""
+    #     exit 1
+    # fi
+    # echo "  - Url: fotolub.com/$key"
+    # export F_KEY="$key"
+    # for name in "${names[@]}"; do
+    #     echo "  - Uploading $name ..."
+    #     resp=$(curl -b cookies.txt -X POST -H "X-Requested-With: XMLHttpRequest" -F "file=@$name" "https://fotolub.com/upload.php" -sL)
+    #     ok=$( echo "$resp" | grep -E '"success"\s*:\s*true' )
+    #     if [[ "$ok" == "" ]]; then
+    #         echo "ERROR: Wrong upload respone status ($resp)"
+    #         exit 1
+    #     fi
+    # done
+    # rm cookies.txt || exit 1
+    # echo "  - fotulub: fotolub.com/$key"
 }
 
 main "$@" || exit 1
