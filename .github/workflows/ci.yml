@@ -13,14 +13,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.1.7
-      - uses: milliewalky/setup-7-zip@v2
 
       - name: Run get.sh 
         id: sh
         run: |
           sudo chmod +x get.sh
           source get.sh
-          echo -e "- Tor version: $TOR_VER\n- [Extracted from official Tor website](https://torproject.org)\n- Orbot version: $ORBOT_VER\n- [Extracted from official Orbot repo](https://github.com/guardianproject/orbot)\n - File-hostings (password: 1):\n    - [https://fotolub.com/$F_KEY](https://fotolub.com/$F_KEY)" > release_body.txt
+          echo -e "- Tor version: $TOR_VER\n- [Extracted from official Tor website](https://torproject.org)\n- Orbot version: $ORBOT_VER\n- [Extracted from official Orbot repo](https://github.com/guardianproject/orbot)" > release_body.txt
           echo "tor_ver=$TOR_VER" >> $GITHUB_OUTPUT
           echo "orbot_ver=$ORBOT_VER" >> $GITHUB_OUTPUT
           echo "ver=tor-$TOR_VER---orbot-$ORBOT_VER" >> $GITHUB_OUTPUT
