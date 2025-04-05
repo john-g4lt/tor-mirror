@@ -13,6 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.1.7
+      - uses: milliewalky/setup-7-zip@v2
 
       - name: Run get.sh 
         id: sh

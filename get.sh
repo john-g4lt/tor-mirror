@@ -95,7 +95,8 @@ main() {
         names+=($name)
         names_len=${#names[@]}
     done
-    
+
+    cd .. || exit 1
     echo "SUCCESS"
 }
 
