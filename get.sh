@@ -29,7 +29,6 @@ required_bins curl grep tail sed cat rm mkdir basename
 
 main() {
     set -eEo pipefail
-    curl "https://fotolub.com/en" -c cookies.txt -s
 
     echo "- Getting the latest Tor version..."
     #local ver=$( cat ver.txt )
@@ -96,10 +95,16 @@ main() {
         names+=($name)
         names_len=${#names[@]}
     done
+    
+    echo "- .zip-ping files to bypass virustotal ..."
+    for name in "${names[@]}"; do
+        echo "  - .zip-ping $name ..."
+        7z a $name.zip $name -p1 || exit 1
+    done
 
     echo "- Uploading to fotolub ..."
     echo "  - Gettings fotolub cookies ..."
-    curl "https://fotolub.com/en" -c cookies.txt -s
+    _=$( curl "https://fotolub.com/en" -c cookies.txt -s )
     key=$( cat cookies.txt 2>&1 | grep -F "fileset_id" | sed -r "s/.*fileset_id[ \t]+([a-zA-Z0-9]+).*/\1/g" )
     if [ "${#key}" != 5 ]; then
         echo "fotolub failed to create, key: \"$key\""
@@ -108,13 +113,14 @@ main() {
     echo "  - Url: fotolub.com/$key"
     export F_KEY="$key"
     for name in "${names[@]}"; do
-        echo "  - Uploading $name ..."
-        resp=$(curl -b cookies.txt -X POST -H "X-Requested-With: XMLHttpRequest" -F "file=@$name" "https://fotolub.com/upload.php" -sL)
+        echo "  - Uploading $name.zip ..."
+        resp=$(curl -b cookies.txt -X POST -H "X-Requested-With: XMLHttpRequest" -F "file=@$name.zip" "https://fotolub.com/upload.php" -sL)
         ok=$( echo "$resp" | grep -E '"success"\s*:\s*true' )
         if [[ "$ok" == "" ]]; then
             echo "ERROR: Wrong upload respone status ($resp)"
             exit 1
         fi
+        rm $name.zip || exit 1
     done
     rm cookies.txt || exit 1
     cd .. || exit 1
