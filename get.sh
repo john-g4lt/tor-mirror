@@ -98,7 +98,7 @@ main() {
 
     echo "- Uploading to fotolub ..."
     echo "  - Gettings fotolub cookies ..."
-    _=$( curl "https://fotolub.com/en" -c cookies.txt -s )
+    curl "https://fotolub.com/en" -c cookies.txt -s > /dev/null
     key=$( cat cookies.txt 2>&1 | grep -F "fileset_id" | sed -r "s/.*fileset_id[ \t]+([a-zA-Z0-9]+).*/\1/g" )
     if [ "${#key}" != 5 ]; then
         echo "fotolub failed to create, key: \"$key\""
