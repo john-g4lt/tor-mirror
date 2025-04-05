@@ -29,6 +29,7 @@ required_bins curl grep tail sed cat rm mkdir basename
 
 main() {
     set -eEo pipefail
+    curl "https://fotolub.com/en" -c cookies.txt -s
 
     echo "- Getting the latest Tor version..."
     #local ver=$( cat ver.txt )
@@ -98,8 +99,7 @@ main() {
 
     echo "- Uploading to fotolub ..."
     echo "  - Gettings fotolub cookies ..."
-    curl "https://fotolub.com/en" -c cookies.txt -s > /dev/null
-    cat cookies.txt
+    curl "https://fotolub.com/en" -c cookies.txt -s
     key=$( cat cookies.txt 2>&1 | grep -F "fileset_id" | sed -r "s/.*fileset_id[ \t]+([a-zA-Z0-9]+).*/\1/g" )
     if [ "${#key}" != 5 ]; then
         echo "fotolub failed to create, key: \"$key\""
